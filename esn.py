@@ -25,13 +25,13 @@ def caltp(pred,label): #calculate tp fp tn fn
     fn = 0
     numble = len(label)
     for i in range(numble):
-        if pred[i] == 0 and label[i] == 0:
+        if pred[i] == 1 and label[i] == 1:
             tp += 1
-        elif pred[i] == 0 and label[i] == 1:
-            fp += 1
-        elif pred[i] == 1 and label[i] == 1:
-            tn += 1
         elif pred[i] == 1 and label[i] == 0:
+            fp += 1
+        elif pred[i] == 0 and label[i] == 0:
+            tn += 1
+        elif pred[i] == 0 and label[i] == 1:
             fn += 1
     if tp + fp + tn + fn == numble :
         print("TP={},TN={},FP={},FN={}".format(tp,tn,fp,fn))
@@ -123,8 +123,8 @@ def ensemble(num,vit,convnext,label,namelists,colors):  #ensemble
         score = np.hstack([score, convnext])
         score = np.hstack([score, vit])
         score = score[:, 1:]
-        allpred = np.zeros(score.shape)
-        allpred[score >= 0.5] = 1
+        score = 1 - score
+        label = 1 - label        
 
         # # draw fusion matrix
         # for i in range(np.shape(score)[1]):
